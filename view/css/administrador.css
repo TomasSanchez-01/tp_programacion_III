@@ -204,4 +204,34 @@ footer ul {
 footer li::marker {
     color: var(--dorado);
 }
- 
+
+.mensaje-exito{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    border: 2px solid rgb(7, 186, 7);
+    background-color: rgb(59, 168, 59);
+    margin: 15px;
+    width: 70vw;
+}
+.mensaje-error{
+    display: flex;
+    justify-content: center;
+    padding: 25px;
+    border-color: rgb(217, 11, 11);
+    background-color: rgb(210, 64, 61);
+    margin: 15px;
+    width: 70vw;
+}
+
+#mensaje{
+    display: flex;
+    justify-content: center;
+}
+
+#getProductForm input{
+    padding: 10px;
+}
+#getProductForm{
+    margin-bottom: 10px;
+}

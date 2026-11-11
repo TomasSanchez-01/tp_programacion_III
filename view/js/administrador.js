@@ -1,7 +1,14 @@
 const contenedor = document.getElementById("tabla-admin");
+const mensaje = document.getElementById("mensaje");
 const urlBase = "http://localhost:4000";
 const getProductForm = document.getElementById("getProductForm");
 let idProd = "";
+
+function mostrarMensaje(type, message) {
+    mensaje.innerHTML = `        
+        <p class="mensaje-${type}">${message}</p>
+    `;
+}
 
 //------- get -------
 getProductForm.addEventListener("submit", event =>{
@@ -23,13 +30,16 @@ async function obtenerProductos(idProd) {
         
         console.log(response); // Response {type: 'cors', url: 'http://localhost:4000/api/products', redirected: false, status: 200, ok: true, …}
 
-        const data = await response.json();
-
-        // Optimizacion 2: Filtramos errores 400 o 500
+       // 1. PRIMERO validamos si la respuesta es correcta (status 200-299)
         if (!response.ok) {
-            return mostrarError(data.message);
-            // el return hace que esta funcion termine
+            // Si el servidor respondió con error, intentamos leer el mensaje si existe, 
+            // o usamos un texto por defecto.
+            const errorData = await response.json().catch(() => ({}));
+            return mostrarError(errorData.message || "Ocurrió un error en el servidor");
         }
+        
+        // 2. SEGUNDO, si todo salió bien, parseamos los datos a JSON
+        const data = await response.json();
         
         // En data tenemos payload: arrayDeObjetos
         const productos = data.payload;
@@ -57,7 +67,7 @@ function renderizarTabla(array){
             <td> ${prod.team}</td>
             <td> ${prod.category}</td>
             <td> ${prod.price}</td>
-            <td> <button class="btn-editar">Editar</button><button class="btn-eliminar">Eliminar</button></td>
+            <td> <button class="btn-editar">Editar</button><button onclick="eliminarProducto(${prod.id})" class="btn-eliminar">Eliminar</button></td>
         </tr>
         `;
     });
@@ -72,6 +82,38 @@ document.getElementById("btn-cliente").addEventListener("click", () => {
 );
 
 
+async function eliminarProducto(id) {
+
+    const confirmacion = confirm("Querés eliminar este producto?");
+
+    if (!confirmacion) {
+        alert("Eliminacion cancelada");
+        return 0;
+    }
+
+    try {
+        const response = await fetch(`${urlBase}/api/products/${id}`, {
+            method: "DELETE"
+        });
+
+        console.log(response);
+
+        const data = await response.json();
+
+        // Optimizacion 3: Filtramos errores 400 o 500
+        if (!response.ok) {
+            return mostrarMensaje("error", data.message);
+            // el return hace que esta funcion termine
+        }
+
+        mostrarMensaje("exito", data.message);
+        console.log(data.message);
+
+    } catch (error) {
+        console.error("Error al eliminar un producto: ", error);
+        mostrarMensaje("error", "Error al enviar la informacion");
+    }
+}
 
 
 
