@@ -30,10 +30,6 @@ app.use((req, res, next) => {
 /*===============
     Endpoints
 ===============*/
-app.get("/", (req, res) => {
-    res.send("Hola mundo desde un server de Express.js");
-});
-
 
 // GET all products
 app.get("/api/products", async (req, res) => {
@@ -60,13 +56,6 @@ app.get("/api/products/:id", async (req, res) => {
         payload: rows
     });
 });
-
-
-// POST product
-/*
-app.post("/api/products", async (req, res) => {
-    
-})*/
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`)
