@@ -1,9 +1,26 @@
 const contenedor = document.getElementById("tabla-admin");
 const urlBase = "http://localhost:4000";
+const getProductForm = document.getElementById("getProductForm");
+let idProd = "";
 
-async function obtenerProductos() {
+//------- get -------
+getProductForm.addEventListener("submit", event =>{
+    event.preventDefault();
+    
+    let idProd = event.target.idProd.value.trim();
+    console.log(idProd);
+    obtenerProductos(idProd);
+})
+
+async function obtenerProductos(idProd) {
     try {
-        const response = await fetch(`${urlBase}/api/products`);
+
+        let response;
+
+        if(idProd != ""){
+            response = await fetch(`${urlBase}/api/products/${idProd}`);
+        }else {response = await fetch(`${urlBase}/api/products`)};
+        
         console.log(response); // Response {type: 'cors', url: 'http://localhost:4000/api/products', redirected: false, status: 200, ok: true, …}
 
         const data = await response.json();
@@ -49,9 +66,13 @@ function renderizarTabla(array){
     contenedor.innerHTML = htmlProducto;
 }
 
-obtenerProductos();
-
 document.getElementById("btn-cliente").addEventListener("click", () => {
     window.location.href = "index.html";
     }
 );
+
+
+
+
+
+obtenerProductos(idProd);
