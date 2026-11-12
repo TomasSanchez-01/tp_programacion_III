@@ -218,9 +218,9 @@ footer li::marker {
     display: flex;
     justify-content: center;
     padding: 25px;
-    border-color: rgb(217, 11, 11);
+    border: 2px solid rgb(233, 233, 233);
     background-color: rgb(210, 64, 61);
-    margin: 15px;
+    margin: 35px;
     width: 70vw;
 }
 
@@ -234,4 +234,25 @@ footer li::marker {
 }
 #getProductForm{
     margin-bottom: 10px;
+}
+
+#crearFormProductos{
+    display: flex;
+    flex-direction: column;
+}
+
+#crearFormProductos label{
+    font-size: 17px;
+    margin: 5px 0px;
+}
+
+.inputsForm{
+   padding: 3px;
+}
+#btn-create-product{
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #2f6a9a;
+    border: 1px solid var(--celeste);
+
 }

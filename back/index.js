@@ -43,6 +43,47 @@ const validateId = (req, res, next) => {
     next(); // Damos paso al siguiente middleware o a la response
 }
 
+// Middleware (de ruta) para validar la informacion de los formularios
+const validateProduct = (req, res, next) => {
+
+    const categoriasValidas = ["titular", "suplente","edicion_especial","entrenamiento"];
+    const errores = [];
+
+    const {team, name, image, price, category} = req.body;
+
+    // Verificamos que mandamos todos los campos
+    if (!name || !image || !price || !category || !team) {
+        errores.push("Faltan campos requeridos");
+    }
+
+    // Verificamos el campo nombre
+    if (typeof name !== "string" || name.trim().length < 2) {
+        errores.push("El nombre debe tener al menos 2 caracteres");
+    }
+
+    // Verificamos el campo precio
+    if (typeof price !== "number" || price <= 0) {
+        errores.push("El precio debe ser un numero mayor a 0");
+    }
+
+    // No validaremos image porque luego usaremos Multer
+
+    // Verificaremos el campo category
+    if(!categoriasValidas.includes(category)) {
+        errores.push("Categoria invalida");
+    }
+
+    // Si hay algun error en la lista, directamente devolvemos un 400
+    if (errores.length > 0) {
+        return res.status(400).json({
+            message: "Datos invalidos",
+            listaErrores: errores
+        });
+    }
+
+    next(); // Damos paso al siguiente middleware o a la response
+}
+
 /*===============
     Endpoints
 ===============*/
@@ -111,6 +152,78 @@ app.delete("/api/products/:id", validateId, async (req, res) => {
 
     } catch (error) {
         console.log("Error eliminando producto: ", error);
+
+        // Optimizacion 3: Error 500 si fallo la conexion a la BBDD
+        res.status(500).json({
+            message: "Error interno del servidor"
+        });
+    }
+
+});
+
+// PUT product
+app.put("/api/products", validateProduct, async (req, res) => {
+    // Optimizacion 1: Validamos los datos del form en el middleware (de ruta) validateProduct
+
+    // Optimizacion 2: Manejo de errores con try catch
+    try {
+        // Hacemos el destructuring de un objeto que parseamos previamente a traves del middleware express.json()
+        const { category, image, name, price, active, id } = req.body;
+    
+        const sql = "UPDATE products SET name = ?, image = ?, price = ?, category = ?, active = ? WHERE id = ?"; 
+    
+        const [result] = await connection.query(sql, [name, image, price, category, active, id]);
+        console.log(result);
+
+        // TO DO, revisar este endpoint
+        // Optimizacion 4: Verificamos si realmente se actualizo algo (hay filas afectadas)
+        if (result.changedRows === 0) {
+            return res.status(404).json({
+                message: "No se actualizo el producto"
+            });
+        }
+        
+        return res.status(200).json({
+            message: "Producto actualizado correctamente"
+        });
+
+    } catch (error) {
+        console.log("Error creando un producto: ", error);
+
+        // Optimizacion 3: Error 500 si fallo la conexion a la BBDD
+        res.status(500).json({
+            message: "Error interno del servidor"
+        });
+    }
+});
+
+// POST product
+app.post("/api/products", validateProduct, async (req, res) => {
+
+    // Optimizacion 1: Validamos los datos del form en el middleware (de ruta) validateProduct
+
+    // Optimizacion 2: Manejo de errores con try catch
+    try {
+        // Hacemos el destructuring de un objeto que parseamos previamente a traves del middleware express.json()
+        // Extraemos los datos que vienen del frontend. 
+        // Nota: si en el req.body te llega como 'equipo', lo renombramos a 'team' para usarlo.
+        const { team, category, image, name, price } = req.body;
+        
+        // Usamos 'team' (que es como se llama la columna en tu MySQL)
+        // Usamos 'active' si tiene un valor por defecto en la BD, o lo incluimos si lo envías.
+        const sql = "INSERT INTO products (team, name, image, category, price) VALUES (?, ?, ?, ?, ?)";
+    
+        const [rows] = await connection.query(sql, [team, name, image, category, price]);
+
+        console.log(rows);
+
+        res.status(201).json({
+            message: "Producto creado exitosamente",
+            productId: rows.insertId // Optimizacion 4: Le pasamos el nuevo id del prod
+        });
+
+    } catch (error) {
+        console.log("Error creando un producto: ", error);
 
         // Optimizacion 3: Error 500 si fallo la conexion a la BBDD
         res.status(500).json({
