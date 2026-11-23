@@ -177,10 +177,9 @@ function formNuevoProducto(){
         <label for="categoryProd">Categoria</label>
 
         <select class="inputsForm" name="category" id="categoryProd" required>
-            <option value="titular">Titular</option>
-            <option value="suplente">Suplente</option>
-            <option value="entrenamiento">Entrenamiento</option>
-            <option value="edicion_especial">Edicion especial</option>
+            <option value="camiseta">Camiseta</option>
+            <option value="campera">Campera</option>
+            <option value="short">Short</option>
         </select>
 
 
