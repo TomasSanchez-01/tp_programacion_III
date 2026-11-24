@@ -46,7 +46,7 @@ const validateId = (req, res, next) => {
 // Middleware (de ruta) para validar la informacion de los formularios
 const validateProduct = (req, res, next) => {
 
-    const categoriasValidas = ["titular", "suplente","edicion_especial","entrenamiento"];
+    const categoriasValidas = ["camiseta", "short", "campera"];
     const errores = [];
 
     const {team, name, image, price, category} = req.body;
@@ -177,18 +177,18 @@ app.put("/api/products", validateProduct, async (req, res) => {
 
         // TO DO, revisar este endpoint
         // Optimizacion 4: Verificamos si realmente se actualizo algo (hay filas afectadas)
-        if (result.changedRows === 0) {
+        /* if (result.changedRows === 0) {
             return res.status(404).json({
                 message: "No se actualizo el producto"
             });
-        }
+        } */
         
         return res.status(200).json({
             message: "Producto actualizado correctamente"
         });
 
     } catch (error) {
-        console.log("Error creando un producto: ", error);
+        console.log("Error actualizando un producto: ", error);
 
         // Optimizacion 3: Error 500 si fallo la conexion a la BBDD
         res.status(500).json({

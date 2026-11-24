@@ -73,7 +73,7 @@ function renderizarTabla(array){
             <td> ${prod.team}</td>
             <td> ${prod.category}</td>
             <td> ${prod.price}</td>
-            <td> <button class="btn-editar">Editar</button><button onclick="eliminarProducto(${prod.id})" class="btn-eliminar">Eliminar</button></td>
+            <td> <button onclick="formPutProduct(${prod.id})" class="btn-editar" >Editar</button>    <button onclick="eliminarProducto(${prod.id})" class="btn-eliminar">Eliminar</button></td>
         </tr>
         `;
     });
@@ -162,6 +162,7 @@ function validarFormulario(data) {
 
 
 function formNuevoProducto(){
+
     let formHtml = `<h2>Crear producto</h2>
     
     <form id="crearFormProductos">
@@ -201,9 +202,9 @@ function formNuevoProducto(){
 
     agregarProducto.innerHTML = formHtml;
 
-    const form = document.querySelector("#crearFormProductos");
+    const form = document.getElementById("crearFormProductos");
     form.addEventListener("submit", async (event) => {
-        //event.preventDefault(); // ¡Evita que la página se recargue!
+        //event.preventDefault(); // Evita que la página se recargue!
         await createProduct(event);  // Ejecutamos tu función asíncrona
     });
 
@@ -257,6 +258,144 @@ async function createProduct(event){
 
     } catch (error) {
         console.error("Error al hacer la solicitud: ", error);
+        mostrarMensaje("error", "Error al enviar la informacion");
+    }
+}
+
+
+async function formPutProduct(id) {
+
+    try {
+        const response = await fetch(`${urlBase}/api/products/${id}`);
+        
+        const data = await response.json(); // Ajustá a response.data si tu API envuelve el objeto
+
+        const prod = data.payload[0];
+        
+        console.log("hola");
+        console.log(prod);
+        if (!response.ok) {
+            return mostrarMensaje("error", data.message);
+        }
+
+        let formHtml = `<h2>Actualizar producto</h2>
+        
+        <form id="crearFormProductos">
+        
+            <label for="team">Equipo</label>
+
+            <select class="inputsForm" name="team" id="equipo" value="${prod.team}" required>
+                <option value="racing">Racing</option>
+                <option value="san_lorenzo">San Lorenzo</option>
+                
+            </select>
+            
+            <label for="categoryProd">Categoria</label>
+
+            <select class="inputsForm" name="category" id="categoryProd" value="${prod.category}"  required>
+                <option value="camiseta">Camiseta</option>
+                <option value="campera">Campera</option>
+                <option value="short">Short</option>
+            </select>
+
+
+            <label for="imageProd">Imagen</label>
+
+            <input class="inputsForm"  type="text" name="image" id="imageProd" value="${prod.image}" required>
+
+            <label for="nameProd">Nombre</label>
+
+            <input class="inputsForm"  type="text" name="name" id="nameProd"  value="${prod.name}" required>
+
+            <label for="priceProd">Precio</label>
+
+            <input class="inputsForm" type="number" name="price" id="priceProd" min="1" value="${prod.price}" required>
+
+            <label for="activeProd">Activo</label>
+            <select name="active" id="activeProd" required>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+            </select>
+
+            <input id="btn-create-product" type="submit" value="Editar producto">
+
+        </form>`;
+
+        agregarProducto.innerHTML = formHtml;
+
+        document.getElementById("activeProd").value = String(prod.active);
+        document.getElementById("equipo").value = prod.team;
+        document.getElementById("categoryProd").value = prod.category;
+        
+        const actualizarFormProductos = document.getElementById("crearFormProductos");
+
+        actualizarFormProductos.addEventListener("submit", event => {
+            // Llamamos a la funcion que hara la peticion PUT y le pasamos el event
+            actualizarProducto(event);
+        });
+    } catch (error) {
+        console.error(error);
+        alert("Error al cargar los datos del producto");
+    }
+}
+
+
+async function actualizarProducto(event) {
+
+    event.preventDefault(); // Evitamos el envio por defecto del formulario
+
+    const formData = new FormData(event.target);
+
+    const formObj = Object.fromEntries(formData.entries());
+
+    // Optimizacion 5: Cambiamos algunos datos del formulario
+    formObj.price = Number(formObj.price); // Convertimos el precio en un numero para poder validarlo como tal
+    formObj.name = formObj.name.trim();
+    console.log(formObj); 
+    
+    // El objeto con la info del formulario se lo paso a la funcion para validar los campos
+    const errores = validarFormulario(formObj); 
+
+    console.log(errores);
+
+    // Si hay errores, mostramos mensaje de error y terminamos aca, no hacemos la peticion
+    if (errores.length > 0) {
+        return mostrarListaErrores(errores);
+    }
+
+    console.table(formObj);
+
+    
+    try {
+        const response = await fetch(`${urlBase}/api/products`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formObj)
+        });
+
+        console.log(response);
+
+        const data = await response.json();
+
+        agregarProducto.innerHTML = "";
+
+        if (!response.ok) {
+            console.error(data.message);
+            return mostrarMensaje("error", data.message);
+        }
+
+        console.log(data.message);
+        alert(data.message);
+
+        agregarProducto.innerHTML = "";
+        mostrarMensaje("exito", data.message);
+
+
+    } catch (error) {
+        console.error("Error al enviar los datos");
+        alert("Error al procesar la solicitud");
         mostrarMensaje("error", "Error al enviar la informacion");
     }
 }
