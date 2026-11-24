@@ -227,32 +227,104 @@ footer li::marker {
 #mensaje{
     display: flex;
     justify-content: center;
+    font-family: var(--fuente-texto);
+    font-size: 20px;
 }
 
-#getProductForm input{
-    padding: 10px;
-}
-#getProductForm{
-    margin-bottom: 10px;
+/*------ 6. forms ------*/
+#getProductForm input[type="number"],
+#cargarProducto input[type="text"],
+#cargarProducto input[type="number"],
+#cargarProducto select {
+    padding: 10px 12px;
+    border: 2px solid var(--celeste);
+    border-radius: 6px;
+    background: var(--papel);
+    font: inherit;
+    color: var(--negro);
 }
 
-#crearFormProductos{
+#getProductForm input[type="number"]:focus,
+#cargarProducto input[type="text"]:focus,
+#cargarProducto input[type="number"]:focus,
+#cargarProducto select:focus {
+    outline: 3px solid var(--granate);
+    outline-offset: 2px;
+    background: var(--blanco);
+}
+
+/*------ 6,2. getByid ------*/
+#getProductForm {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+#getProductForm input[type="submit"] {
+    padding: 10px 22px;
+    border: 2px solid var(--granate);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--granate);
+    font-family: var(--fuente-titulos);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+#getProductForm input[type="submit"]:hover {
+    background: var(--granate);
+    color: var(--blanco);
+}
+
+/* ----------6,3. Crear / editar producto ---------- */
+#cargarProducto {
+    max-width: 480px;
+    margin: 32px auto 0;
+}
+
+#cargarProducto h2 {
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--granate);
+    font-family: var(--fuente-titulos);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+#cargarProducto form {
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    padding: 24px;
+    background: var(--blanco);
+    border: 1px solid #d9dde3;
+    border-radius: 10px;
 }
 
-#crearFormProductos label{
-    font-size: 17px;
-    margin: 5px 0px;
+#cargarProducto label {
+    margin-top: 10px;
+    font-weight: 500;
 }
 
-.inputsForm{
-   padding: 3px;
-}
-#btn-create-product{
-    margin-top: 15px;
+#cargarProducto input[type="submit"] {
+    margin-top: 20px;
     padding: 10px;
-    background-color: #2f6a9a;
-    border: 1px solid var(--celeste);
+    border: 2px solid var(--granate);
+    border-radius: 6px;
+    background: var(--granate);
+    color: var(--blanco);
+    font-family: var(--fuente-titulos);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
 
+#cargarProducto input[type="submit"]:hover {
+    background: transparent;
+    color: var(--granate);
 }

@@ -6,7 +6,7 @@ const contenedor = document.getElementById("tabla-admin");
 const mensaje = document.getElementById("mensaje");
 const urlBase = "http://localhost:4000";
 const getProductForm = document.getElementById("getProductForm");
-const agregarProducto = document.getElementById("agregarProducto");
+const cargarProducto = document.getElementById("cargarProducto");
 
 let idProd = "";
 
@@ -125,7 +125,7 @@ function mostrarListaErrores(array) {
         htmlErrores += `<p class="mensaje error">${error}</p>`;
         });
         
-        agregarProducto.innerHTML = htmlErrores;
+        cargarProducto.innerHTML = htmlErrores;
 } 
 
 // Optimizacion 2: Hacemos una validacion previa de los datos del <form> en el cliente
@@ -200,11 +200,11 @@ function formNuevoProducto(){
 
     </form>`;
 
-    agregarProducto.innerHTML = formHtml;
+    cargarProducto.innerHTML = formHtml;
 
     const form = document.getElementById("crearFormProductos");
     form.addEventListener("submit", async (event) => {
-        //event.preventDefault(); // Evita que la página se recargue!
+        event.preventDefault(); // Evita que la página se recargue!
         await createProduct(event);  // Ejecutamos tu función asíncrona
     });
 
@@ -260,6 +260,8 @@ async function createProduct(event){
         console.error("Error al hacer la solicitud: ", error);
         mostrarMensaje("error", "Error al enviar la informacion");
     }
+    cargarProducto.innerHTML = "";
+    obtenerProductos(idProd);
 }
 
 
@@ -323,7 +325,8 @@ async function formPutProduct(id) {
 
         </form>`;
 
-        agregarProducto.innerHTML = formHtml;
+        cargarProducto.innerHTML = formHtml;
+        cargarProducto.scrollIntoView({ behavior: "smooth" });
 
         document.getElementById("activeProd").value = String(prod.active);
         document.getElementById("equipo").value = prod.team;
@@ -381,7 +384,7 @@ async function actualizarProducto(event) {
 
         const data = await response.json();
 
-        agregarProducto.innerHTML = "";
+        cargarProducto.innerHTML = "";
 
         if (!response.ok) {
             console.error(data.message);
@@ -389,9 +392,7 @@ async function actualizarProducto(event) {
         }
 
         console.log(data.message);
-        alert(data.message);
 
-        agregarProducto.innerHTML = "";
         mostrarMensaje("exito", data.message);
 
 
@@ -400,6 +401,7 @@ async function actualizarProducto(event) {
         alert("Error al procesar la solicitud");
         mostrarMensaje("error", "Error al enviar la informacion");
     }
+    obtenerProductos(idProd);
 }
 
 
