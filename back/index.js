@@ -6,7 +6,6 @@ import environments from "./src/api/config/environments.js"; // Traigo la info d
 import connection from "./src/api/database/db.js"; // Importo la conexion a la BBDD
 import cors from "cors"; // Importamos el middleware CORS
 
-
 /*===============
     Config
 ===============*/
@@ -45,11 +44,11 @@ const validateId = (req, res, next) => {
 
 // Middleware (de ruta) para validar la informacion de los formularios
 const validateProduct = (req, res, next) => {
-
     const categoriasValidas = ["camiseta", "short", "campera"];
     const errores = [];
 
     const {team, name, image, price, category} = req.body;
+
 
     // Verificamos que mandamos todos los campos
     if (!name || !image || !price || !category || !team) {
@@ -80,7 +79,6 @@ const validateProduct = (req, res, next) => {
             listaErrores: errores
         });
     }
-
     next(); // Damos paso al siguiente middleware o a la response
 }
 
@@ -168,20 +166,20 @@ app.put("/api/products", validateProduct, async (req, res) => {
     // Optimizacion 2: Manejo de errores con try catch
     try {
         // Hacemos el destructuring de un objeto que parseamos previamente a traves del middleware express.json()
-        const { category, image, name, price, active, id } = req.body;
+        const { team, name, image, category, price, active, id } = req.body;
+
+        const sql = "UPDATE products SET team = ?, name = ?, image = ?, category = ?, price = ?, active = ? WHERE id = ?"; 
     
-        const sql = "UPDATE products SET name = ?, image = ?, price = ?, category = ?, active = ? WHERE id = ?"; 
-    
-        const [result] = await connection.query(sql, [name, image, price, category, active, id]);
+        const [result] = await connection.query(sql, [team, name, image, category, price, active, id]);
         console.log(result);
 
         // TO DO, revisar este endpoint
         // Optimizacion 4: Verificamos si realmente se actualizo algo (hay filas afectadas)
-        /* if (result.changedRows === 0) {
+        if (result.changedRows === 0) {
             return res.status(404).json({
                 message: "No se actualizo el producto"
             });
-        } */
+        }
         
         return res.status(200).json({
             message: "Producto actualizado correctamente"

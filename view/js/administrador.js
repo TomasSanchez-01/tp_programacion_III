@@ -284,6 +284,8 @@ async function formPutProduct(id) {
         
             <label for="team">Equipo</label>
 
+            <input type="hidden" name="id" value="${prod.id}">
+
             <select class="inputsForm" name="team" id="equipo" value="${prod.team}" required>
                 <option value="racing">Racing</option>
                 <option value="san_lorenzo">San Lorenzo</option>
