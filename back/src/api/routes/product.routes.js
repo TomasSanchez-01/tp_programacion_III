@@ -7,7 +7,7 @@ const router = Router();
 router.get("/", getAllProducts);
 
 // GET product by id
-router.get("/:id", getProductsById);
+router.get("/:id",validateId, getProductsById);
 
 // DELETE product
 router.delete("/:id", validateId, removeProduct);

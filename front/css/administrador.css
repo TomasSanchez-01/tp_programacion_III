@@ -328,3 +328,23 @@ footer li::marker {
     background: transparent;
     color: var(--granate);
 }
+
+/* ---------- Estado del producto ---------- */
+
+.fila-inactiva .linea {
+    color: gray;
+    text-decoration: line-through;
+}
+
+/* Imagen apagada */
+.fila-inactiva img {
+    opacity: 0.4;
+}
+
+.estado-activo {
+    color: green;
+}
+
+.estado-inactivo {
+    color: gray;
+}

@@ -1,4 +1,3 @@
-import connection from "../database/db.js"; // Importo la conexion a la BBDD
 import ProductModels from "../models/product.models.js";
 
 export const getAllProducts = async (req, res) => {
@@ -24,8 +23,8 @@ export const getProductsById = async (req, res) => {
     
     // Accedo al valor numerico del parametro de la url 
     try{
-
-        const [rows] = await ProductModels.selectProductsById(req.id);
+        const { id } = req.params;
+        const [rows] = await ProductModels.selectProductsById(id);
     
         res.status(200).json({
             payload: rows
@@ -48,7 +47,7 @@ export const removeProduct = async (req, res) => {
     // Optimizacion 2: Manejo de errores con try catch
     try {
     
-        await ProductModels.removeProduct(req.id);
+        await ProductModels.deleteProduct(req.id);
     
         res.status(200).json({
             message: `Producto con id ${req.id} eliminado exitosamente`
@@ -73,7 +72,7 @@ export const putProduct = async (req, res) => {
     try {
         // Hacemos el destructuring de un objeto que parseamos previamente a traves del middleware express.json()
         const { team, name, image, category, price, active, id } = req.body;
-        const [result] = await ProductModels.putProduct(team, name, image, category, price, active, id);
+        const [result] = await ProductModels.updateProduct(team, name, image, category, price, active, id);
         console.log(result);
 
         // TO DO, revisar este endpoint
@@ -108,7 +107,7 @@ export const createProduct = async (req, res) => {
         // Extraemos los datos que vienen del frontend. 
         // Nota: si en el req.body te llega como 'equipo', lo renombramos a 'team' para usarlo.
         const { team, category, image, name, price } = req.body;
-        const [rows] = await connection.query(team, name, image, category, price);
+        const [rows] = await ProductModels.insertProduct(team, name, image, category, price);
         console.log(rows);
 
         res.status(201).json({

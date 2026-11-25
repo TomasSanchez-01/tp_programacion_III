@@ -1,7 +1,3 @@
-document.getElementById("btn-cliente").addEventListener("click", () => {
-    window.location.href = "index.html";
-    }
-);
 const contenedor = document.getElementById("tabla-admin");
 const mensaje = document.getElementById("mensaje");
 const urlBase = "http://localhost:4000";
@@ -10,10 +6,15 @@ const cargarProducto = document.getElementById("cargarProducto");
 
 let idProd = "";
 
+let temporizadorMensaje;
 function mostrarMensaje(type, message) {
-    mensaje.innerHTML = `        
+    mensaje.innerHTML = `
         <p class="mensaje-${type}">${message}</p>
     `;
+    clearTimeout(temporizadorMensaje);
+    temporizadorMensaje = setTimeout(() => {
+        mensaje.innerHTML = "";
+    }, 2000);
 }
 
 //------- get -------
@@ -63,21 +64,28 @@ async function obtenerProductos(idProd) {
 function renderizarTabla(array){
     let htmlProducto = `<table>`;
 
-    htmlProducto += `<tr><th></th><th>Id</th><th>Name</th><th>Team</th><th>Categoria</th><th>Price</th><th>Accion</th></tr>`;
+    // CAMBIO: nueva columna "Estado"
+    htmlProducto += `<tr><th></th><th>Id</th><th>Nombre</th><th>Equipo</th><th>Categoría</th><th>Precio</th><th>Estado</th><th>Acción</th></tr>`;
+
     array.forEach(prod => {
+        // NUEVO: averiguamos si está activo (1) o inactivo (0)
+        const activo = Number(prod.active) === 1;
+
+        // CAMBIO: clase en el <tr> y nueva celda de estado
         htmlProducto +=`
-        <tr>
+        <tr class="${activo ? "" : "fila-inactiva"}">
             <td><img src="${prod.image}" alt="${prod.name}"></td>
-            <td> ${prod.id}</td>
-            <td> ${prod.name}</td>
-            <td> ${prod.team}</td>
-            <td> ${prod.category}</td>
-            <td> ${prod.price}</td>
-            <td> <button onclick="formPutProduct(${prod.id})" class="btn-editar" >Editar</button>    <button onclick="eliminarProducto(${prod.id})" class="btn-eliminar">Eliminar</button></td>
+            <td class="linea">${prod.id}</td>
+            <td class="linea">${prod.name}</td>
+            <td class="linea">${prod.team}</td>
+            <td class="linea">${prod.category}</td>
+            <td class="linea">${prod.price}</td>
+            <td><span class="estado ${activo ? "estado-activo" : "estado-inactivo"}">${activo ? "Activo" : "Inactivo"}</span></td>
+            <td> <button onclick="formPutProduct(${prod.id})" class="btn-editar">Editar</button> <button onclick="eliminarProducto(${prod.id})" class="btn-eliminar">Eliminar</button></td>
         </tr>
         `;
     });
-    htmlProducto += `</table>`
+    htmlProducto += `</table>`;
 
     contenedor.innerHTML = htmlProducto;
 }
@@ -267,15 +275,19 @@ async function createProduct(event){
 
 async function formPutProduct(id) {
 
+    console.log("hola");
     try {
         const response = await fetch(`${urlBase}/api/products/${id}`);
         
         const data = await response.json(); // Ajustá a response.data si tu API envuelve el objeto
 
+
+        console.log("id recibido:", id);
+        console.log("respuesta:", data);
         const prod = data.payload[0];
         
-        console.log("hola");
         console.log(prod);
+
         if (!response.ok) {
             return mostrarMensaje("error", data.message);
         }
