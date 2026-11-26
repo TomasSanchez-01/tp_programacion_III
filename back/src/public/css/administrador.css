@@ -329,3 +329,52 @@ dialog h4 {
 .modal-acciones button {
     flex: 1;
 }
+
+/* ---------- 11. Login ---------- */
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Este título estaba solo en clientes.css, acá lo necesitamos también */
+.titulo-pagina {
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--granate);
+    font-family: var(--fuente-titulos);
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+}
+
+.loginForm label {
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.loginForm .btn {
+    margin-top: 20px;
+}
+
+/* El mensaje de error reutiliza .mensaje-error, pero ajustado al ancho del formulario */
+.loginContainer .mensaje-error {
+    width: 100%;
+    max-width: 420px;
+    margin: 16px 0 0;
+    padding: 12px;
+    color: var(--blanco);
+    font-size: 18px;
+}

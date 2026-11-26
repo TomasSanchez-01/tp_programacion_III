@@ -38,7 +38,7 @@ function renderizarTabla(array){
         // CAMBIO: clase en el <tr> y nueva celda de estado
         htmlProducto +=`
         <tr class="${activo ? "" : "fila-inactiva"}">
-        <td><img src="${prod.image}" alt="${prod.name}"></td>
+        <td><img src="../${prod.image}" alt="${prod.name}"></td>
         <td class="linea">${prod.id}</td>
         <td class="linea">${prod.name}</td>
         <td class="linea">${prod.team}</td>

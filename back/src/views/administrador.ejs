@@ -1,0 +1,28 @@
+<%- include("partials/head.ejs") %> 
+<%- include("partials/header.ejs") %> 
+
+    <main>
+    </div>
+    <form id="getProductForm">
+        <input class="inputsForm" type="number" name="id" id="idProd" min="1" placeholder="Buscar por id">
+        <input class = "btn" type="submit" value="Buscar">
+    </form>
+    <section id="tabla-admin"></section>
+    <button class="btn btn-lleno btn-agregar" onclick="formNuevoProducto()" >Agregar</button>
+    
+    <div id="cargarProducto"></div>
+    <div id="mensaje">
+    </main>
+
+    <dialog id="modal-confirmar">
+        <h4>¿Quieres eliminar este producto?</h4>
+        <div class="modal-acciones">
+            <button type="button" class= "btn btn-celeste" id="btn-cancelar">Cancelar</button>
+            <button type="button" class= "btn" id="btn-confirmar">Eliminar</button>
+        </div>
+    </dialog>
+
+    <script src="/js/administrador.js"></script>
+
+
+<%- include("partials/footer.ejs") %>

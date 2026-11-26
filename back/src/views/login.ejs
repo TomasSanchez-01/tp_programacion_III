@@ -1,0 +1,35 @@
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %> 
+
+<main class="loginContainer">
+    <h3 class="titulo-pagina"> <%= about %></h3>
+
+    <!-- Formulario de login 
+    
+    - action: la ruta a donde enviamos la info, HTTP POST a /login
+    - method: POST
+
+    Enviaremos los datos no con JS, sino a traves de HTML
+    Los datos se manadaron no en JSON sino en x-www-form-urlencoded
+    -->
+    <form id="formLogin" action="/login" method="POST" class="loginForm">
+        <label for="emailUser">Email</label>
+        <input type="email" name="email" id="emailUser" class="inputsForm" autocomplete="username" required>
+
+        <label for="passwordUser">Password</label>
+        <input type="password" name="password" id="passwordUser" class="inputsForm" autocomplete="current-password" required>
+
+        <input type="submit" value="Login" class="btn btn-lleno">
+
+        <button type="button" id="btn-acceso-rapido" class="btn btn-celeste">Acceso rápido</button>
+    </form>
+
+    <% if (locals.error) { %>
+        <p id="mensaje-error" class="mensaje-error"><%= error %></p>
+    <% } %>
+
+</main>
+
+<script src="/js/login.js"></script>
+
+<%- include("partials/footer.ejs") %>

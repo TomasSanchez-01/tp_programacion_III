@@ -64,8 +64,21 @@ const validateProduct = (req, res, next) => {
     next(); // Damos paso al siguiente middleware o a la response
 }
 
+// Middleware de proteccion de rutas
+const requireLogin = (req, res, next) => {
+
+    // Chequeamos si existe una sesion creada, sino redirigimos a login
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+
+    // Damos paso al siguiente middleware o a la response
+    next();
+}
+
 export {
     loggerUrl,
     validateId,
-    validateProduct
+    validateProduct,
+    requireLogin
 }
