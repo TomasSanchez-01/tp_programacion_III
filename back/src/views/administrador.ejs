@@ -1,7 +1,22 @@
 <%- include("partials/head.ejs") %> 
-<%- include("partials/header.ejs") %> 
+    
+<header>
+    <div id="marca">
+        <a href="/dashboard/principal">
+            <img id="logo" src="../img/imagen_simple.png" alt="logo" width="80px">
+            <h1>Manto sagrado</h1>
+        </a>
+    </div>
+    <div>
+        <button id="btn-tema" class="btn btn-lleno">Modo oscuro</button>
+        <form action="/logout" method="POST" class="form-logout">
+            <button type="submit" id="btn-logout" class="btn btn-lleno">Logout</button>
+        </form>
+        <a href="crear" id="btn-crear" class="btn btn-lleno">Crear Usuarios</a>
+    </div>
+</header> 
 
-    <main>
+<main>
     </div>
     <form id="getProductForm">
         <input class="inputsForm" type="number" name="id" id="idProd" min="1" placeholder="Buscar por id">
@@ -10,19 +25,19 @@
     <section id="tabla-admin"></section>
     <button class="btn btn-lleno btn-agregar" onclick="formNuevoProducto()" >Agregar</button>
     
-    <div id="cargarProducto"></div>
+    <div class="cargarProducto" id="cargarProducto"></div>
     <div id="mensaje">
-    </main>
+</main>
 
-    <dialog id="modal-confirmar">
-        <h4>¿Quieres eliminar este producto?</h4>
-        <div class="modal-acciones">
-            <button type="button" class= "btn btn-celeste" id="btn-cancelar">Cancelar</button>
-            <button type="button" class= "btn" id="btn-confirmar">Eliminar</button>
-        </div>
-    </dialog>
+<dialog id="modal-confirmar">
+    <h4>¿Quieres eliminar este producto?</h4>
+    <div class="modal-acciones">
+        <button type="button" class= "btn btn-celeste" id="btn-cancelar">Cancelar</button>
+        <button type="button" class= "btn" id="btn-confirmar">Eliminar</button>
+    </div>
+</dialog>
 
-    <script src="/js/administrador.js"></script>
+<script src="/js/administrador.js"></script>
 
 
 <%- include("partials/footer.ejs") %>

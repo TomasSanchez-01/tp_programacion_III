@@ -17,4 +17,12 @@ export const vistaPrincipal = async (req, res) => {
         about: "Lista de productos",
         listaProductos: rows
     });
+    
+}
+
+export const vistaCrear = (req, res) => {
+    res.render("crear", {
+        title: "Crear",
+        about: "Crear usuario"
+    });
 }

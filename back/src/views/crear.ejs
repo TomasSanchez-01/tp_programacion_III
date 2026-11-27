@@ -1,0 +1,48 @@
+<%- include("partials/head.ejs") %> 
+<header>
+    <div id="marca">
+        <a href="/dashboard/principal">
+            <img id="logo" src="../img/imagen_simple.png" alt="logo" width="80px">
+            <h1>Manto sagrado</h1>
+        </a>
+    </div>
+    <div>
+        <button id="btn-tema" class="btn btn-lleno">Modo oscuro</button>
+        <form action="/logout" method="POST" class="form-logout">
+            <button type="submit" id="btn-logout" class="btn btn-lleno">Logout</button>
+        </form>
+        <a href="/dashboard/principal" id="btn-prod" class="btn btn-lleno">Ver Productos</a>
+    </div>
+</header>
+
+<main>
+    <div class="cargarProducto">
+        <form method="POST" action="/api/users">
+            
+            <label for="nameUser">Nombre</label>
+            <input class="inputsForm"  type="text" name="name" id="nameUser" required>
+        
+            <label for="emailUser">Correo</label>
+            <input class="inputsForm"  type="text" name="email" id="emailUser" required>
+            
+            <label for="passwordUser">Contraseña</label>
+            <input class="inputsForm"  type="text" name="password" id="passwordUser" required>
+    
+            <input class="btn btn-lleno" type="submit" value="Crear admin">
+            
+        </form>
+    </div>
+        <% if (typeof exito !== "undefined") { %>
+            <p class="mensaje-exito-usuario"> <%= exito %> </p>
+        <% } %>
+        
+        <!-- En caso de recibir un mensaje de error, lo mostramos -->
+        <% if (typeof error !== "undefined") { %>
+            <p class="mensaje-error-usuario"> <%= error %> </p>
+        <% } %>
+</main>
+
+
+<script src="/js/crearUsuarios.js"></script>
+
+<%- include("partials/footer.ejs") %>

@@ -111,6 +111,12 @@ header {
     box-shadow: 0 4px 0 var(--granate);
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#marca a,
 #marca,
 #logo {
     display: flex;
@@ -126,6 +132,11 @@ header img {
 header h1 {
     font-size: 25px;
     padding-left: 24px;
+}
+
+.form-logout {
+    display: inline;
+    margin: 0;
 }
 
 /* ---------- 5. Main y tabla ---------- */
@@ -204,21 +215,53 @@ footer li::marker {
 
 .mensaje-exito,
 .mensaje-error {
-    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 700px;
     margin: 15px;
-    width: 70vw;
+    padding: 20px;
+    border: 2px solid;
+    border-radius: 8px;
+    color: #ffffff;
+    font-weight: bold;
     text-align: center;
 }
 
 .mensaje-exito {
-    border: 2px solid rgb(7, 186, 7);
-    background-color: rgb(59, 168, 59);
+    background-color: #2e9e45;
+    border-color: #1f7a33;
 }
 
 .mensaje-error {
-    border: 2px solid rgb(233, 233, 233);
-    background-color: rgb(210, 64, 61);
+    background-color: #d2403d;
+    border-color: #a82f2c;
 }
+
+.mensaje-exito-usuario,
+.mensaje-error-usuario {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 700px;
+    margin: 15px auto;
+    padding: 20px;
+    border: 2px solid;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.mensaje-exito-usuario {
+    background-color: #2e9e45;
+    border-color: #1f7a33;
+}
+
+.mensaje-error-usuario {
+    background-color: #d2403d;
+    border-color: #a82f2c;
+}
+
 
 /* ---------- 8. Formularios ---------- */
 .inputsForm {
@@ -245,12 +288,12 @@ footer li::marker {
 }
 
 /* Crear / editar producto */
-#cargarProducto {
+.cargarProducto {
     max-width: 480px;
     margin: 32px auto 0;
 }
 
-#cargarProducto h2 {
+.cargarProducto h2 {
     margin-bottom: 16px;
     padding-bottom: 8px;
     border-bottom: 3px solid var(--granate);
@@ -260,7 +303,7 @@ footer li::marker {
     line-height: 1.1;
 }
 
-#cargarProducto form {
+.cargarProducto form {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -270,12 +313,12 @@ footer li::marker {
     border-radius: 10px;
 }
 
-#cargarProducto label {
+.cargarProducto label {
     margin-top: 10px;
     font-weight: 500;
 }
 
-#cargarProducto input[type="submit"] {
+.cargarProducto input[type="submit"] {
     margin-top: 20px;
 }
 
