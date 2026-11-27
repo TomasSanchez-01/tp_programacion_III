@@ -5,7 +5,7 @@ import express from "express"; // Importamos el framework Express
 import environments from "./src/api/config/environments.js"; // Traigo la info de la variables de entorno
 import cors from "cors"; // Importamos el middleware CORS
 import { loggerUrl } from "./src/api/middlewares/middlewares.js";
-import { authRoutes, productRoutes, userRoutes, viewRoutes } from "./src/api/routes/index.js";
+import { authRoutes, productRoutes, salesRoutes, userRoutes, viewRoutes } from "./src/api/routes/index.js";
 import { join, __dirname } from "./src/api/utils/index.js";
 import session from "express-session";
 
@@ -56,7 +56,8 @@ app.use("/dashboard", viewRoutes);
 // Rutas autenticacion
 app.use("/", authRoutes);
 
-
+// Rutas de ventas
+app.use("/api/sales", salesRoutes);
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`)

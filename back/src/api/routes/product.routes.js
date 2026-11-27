@@ -1,6 +1,6 @@
 import {Router} from "express";
 import { validateId, validateProduct } from "../middlewares/middlewares.js";
-import { removeProduct, getAllProducts, getProductsById, createProduct, putProduct } from "../controllers/product.controllers.js";
+import { removeProduct, getAllProducts, getProductsById, createProduct, putProduct, getActiveProducts } from "../controllers/product.controllers.js";
 const router = Router();
 
 // GET all products
@@ -17,5 +17,8 @@ router.put("/", validateProduct, putProduct);
 
 // POST product
 router.post("/", validateProduct, createProduct);
+
+// GET active products
+router.get("/", getActiveProducts);
 
 export default router;

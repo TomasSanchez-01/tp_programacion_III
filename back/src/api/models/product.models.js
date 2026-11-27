@@ -25,10 +25,16 @@ const insertProduct = (team, category, image, name, price) => {
         return connection.query(sql, [team, name, image, category, price]);
 }
 
+const selectActiveProducts = () => {
+    const sql = "SELECT * FROM products WHERE active = ?";
+    return connection.query(sql,[1]);
+};
+
 export default {
     selectAllProducts,
     selectProductsById,
     deleteProduct,
     updateProduct,
-    insertProduct
+    insertProduct,
+    selectActiveProducts
 }
